@@ -1,6 +1,6 @@
 import { format, parseISO, formatRelative, subDays } from 'date-fns'
 
-const Date = ({ dateString }) => {
+const Date = ({ dateString }: { dateString: string }) => {
 
   const date = parseISO(dateString)
   return <div>

@@ -16,7 +16,13 @@ export async function getStaticProps() {
   }
 }
 
-export default function Home({ allPostData }) {
+
+
+export default function Home({ allPostData }: {
+  allPostData: {
+    id: string, title: string, date: string
+  }[]
+}) {
 
   return (
 
@@ -41,7 +47,9 @@ export default function Home({ allPostData }) {
 
         <ul>
 
-          {allPostData.map(({ id, title, date }) =>
+          {allPostData.map(({ id, title, date }: {
+            id: string, title: string, date: string
+          }) =>
           (<li className={utilStyles.listItem} key={id}>
 
             <Link href={`/posts/${id}`}>

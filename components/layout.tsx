@@ -5,7 +5,9 @@ import Link from 'next/link'
 const name = 'Seongsoo Yim'
 export const siteTitle = 'Next.js Sample Exercise'
 
-const Layout = ({ children, home }) => {
+const Layout = ({ children, home }: {
+  children: React.ReactNode, home?: boolean
+}) => {
   return <div className={styles.container}>
     <Head>
       <link rel="icon" href="/favicon.ico" />
@@ -17,7 +19,7 @@ const Layout = ({ children, home }) => {
       <meta name="twitter:card" content="summary_large_image" />
       <script
         src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"
-        crossorigin="anonymous"
+        crossOrigin="anonymous"
       ></script>
 
     </Head>

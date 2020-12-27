@@ -16,43 +16,35 @@ getAllPostIds: returns id from API data objects
 getPostData; returns post by its id 
  */
 
-export const getAllPostIdsAPI = async () => {
-
-  // const postsData = await fetch('https://jsonplaceholder.typicode.com/posts', 'GET')
-  // console.log(postsData.length);
-
-  const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts`)
-  console.log(data.length)
-  // const postIds = postsData.map((post) => {
-  //   return {
-  //     params: {
-  //       id: post.id
-  //     }
-  //   }
-  // })
-
-  const postIds = [{
-    params: {
-      id: '1'
-    }
-  }, {
-    params: {
-      id: '1'
-    }
-  }]
+// export const getAllPostIdsAPI = async () => {
 
 
-  return postIds
-}
-
-export const getPostDataAPI = async (id) => {
-
-  // const post = await fetch('https://jsonplaceholder.typicode.com/posts/', id)
-  const { data: post } = await axios.get(`https://jsonplaceholder.typicode.com/posts/`, id)
+//   const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts`)
+//   console.log(data.length)
 
 
-  return { post }
-}
+//   const postIds = [{
+//     params: {
+//       id: '1'
+//     }
+//   }, {
+//     params: {
+//       id: '1'
+//     }
+//   }]
+
+
+//   return postIds
+// }
+
+// export const getPostDataAPI = async (id: string) => {
+
+//   // const post = await fetch('https://jsonplaceholder.typicode.com/posts/', id)
+//   const { data: post } = await axios.get(`https://jsonplaceholder.typicode.com/posts/`, id)
+
+
+//   return { post }
+// }
 
 export const getSortedPostsData = () => {
   const fileNames = fs.readdirSync(postsDir)
@@ -65,7 +57,7 @@ export const getSortedPostsData = () => {
     const matterResult = matter(fileContent)
     // console.log(matterResult);
     return {
-      id, ...matterResult.data
+      id, ...(matterResult.data as { date: string, title: string })
     }
 
   })
@@ -117,7 +109,7 @@ export const getAllPostIds = () => {
 
 }
 
-export const getPostData = async (id) => {
+export const getPostData = async (id: string) => {
   const fullPath = path.join(postsDir, `${id}.md`)
   const fileContent = fs.readFileSync(fullPath)
 
@@ -128,6 +120,6 @@ export const getPostData = async (id) => {
   const content = await remark().use(html).process(matterResult.content)
   const contentHtml = content.toString()
   return {
-    id, contentHtml, ...matterResult.data
+    id, contentHtml, ...(matterResult.data as { title: string, date: string })
   }
 }
