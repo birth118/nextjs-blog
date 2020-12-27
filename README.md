@@ -1,4 +1,7 @@
-# nextjs-blog
+## nextjs-blog
 
-For Dev: npm run dev
-Typescript converted
+---
+
+- Next.js
+- npm run dev
+- Typescript converted
