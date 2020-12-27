@@ -1,0 +1,7 @@
+const Custom404 = () => {
+  return <div>
+    <h1> 404 - Page 페이지 Not found</h1>
+  </div>
+}
+
+export default Custom404
