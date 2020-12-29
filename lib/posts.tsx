@@ -4,6 +4,8 @@ import matter from 'gray-matter'
 import remark from 'remark'
 import html from 'remark-html'
 import axios from 'axios'
+import { defaultCoreCipherList } from 'constants'
+
 
 
 const postsDir = path.join(process.cwd(), 'posts')
@@ -16,35 +18,24 @@ getAllPostIds: returns id from API data objects
 getPostData; returns post by its id 
  */
 
-// export const getAllPostIdsAPI = async () => {
 
 
-//   const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts`)
-//   console.log(data.length)
+interface Post {
+  // <-- Typescript code which means here Todo 'interface 'is a object withe the three properties
+  id: string
+  // userId: number
+  title: string
+  body: string
+}
+
+interface PostIds {
+  params: {
+    id: string
+  }
+}
 
 
-//   const postIds = [{
-//     params: {
-//       id: '1'
-//     }
-//   }, {
-//     params: {
-//       id: '1'
-//     }
-//   }]
 
-
-//   return postIds
-// }
-
-// export const getPostDataAPI = async (id: string) => {
-
-//   // const post = await fetch('https://jsonplaceholder.typicode.com/posts/', id)
-//   const { data: post } = await axios.get(`https://jsonplaceholder.typicode.com/posts/`, id)
-
-
-//   return { post }
-// }
 
 export const getSortedPostsData = () => {
   const fileNames = fs.readdirSync(postsDir)
@@ -72,6 +63,26 @@ export const getSortedPostsData = () => {
     }
   })
 }
+
+
+export const getSortedPostsDataAPI = async () => {
+
+  const url = 'https://jsonplaceholder.typicode.com/posts'
+
+
+
+
+  const { data } = await axios.get(url)
+
+  //console.log(data);
+  const json = JSON.stringify(data)
+  return json
+
+
+
+}
+
+// console.log(getSortedPostsDataAPI())
 
 export const getAllPostIds = () => {
 
@@ -109,6 +120,25 @@ export const getAllPostIds = () => {
 
 }
 
+export const getAllPostIdsAPI = async () => {
+
+  const url = 'https://jsonplaceholder.typicode.com/posts/'
+  const { data } = await axios.get(url)
+
+  const postIds = data.map((post: Post): PostIds => {
+    return {
+      params: {
+        id: post.id + 'A'
+      }
+    }
+
+  })
+
+  // const json = JSON.stringify(postIds)
+  return postIds
+}
+
+
 export const getPostData = async (id: string) => {
   const fullPath = path.join(postsDir, `${id}.md`)
   const fileContent = fs.readFileSync(fullPath)
@@ -122,4 +152,15 @@ export const getPostData = async (id: string) => {
   return {
     id, contentHtml, ...(matterResult.data as { title: string, date: string })
   }
+}
+
+export const getPostDataAPI = async (id: string) => {
+  const idMinusA = id.slice(0, id.length - 1)
+  const url = `https://jsonplaceholder.typicode.com/posts/${idMinusA}`
+  const { data } = await axios.get(url)
+
+  //const json = JSON.stringify(data)
+
+  return data
+
 }

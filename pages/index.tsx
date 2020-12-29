@@ -3,16 +3,26 @@ import Link from 'next/link'
 import Date from '../components/date'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+import { getAllPostIds, getSortedPostsData, getSortedPostsDataAPI } from '../lib/posts'
+import axios from 'axios'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next' // For typescript
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async (context) => {
 
-  const allPostData = getSortedPostsData()
+
+  //const url = 'https://jsonplaceholder.typicode.com/posts'
+
+  //const { data: allPostData } = await axios.get(url)
+  //console.log(data);
+
+  const data = await getSortedPostsDataAPI()
+  const allPostData = JSON.parse(data)
 
   return {
     props: {
       allPostData
     }
+
   }
 }
 
@@ -20,7 +30,7 @@ export async function getStaticProps() {
 
 export default function Home({ allPostData }: {
   allPostData: {
-    id: string, title: string, date: string
+    id: string, title: string, body: string
   }[]
 }) {
 
@@ -46,22 +56,13 @@ export default function Home({ allPostData }: {
         <h2 className={utilStyles.headingLg}>Blogs</h2>
 
         <ul>
-
-          {allPostData.map(({ id, title, date }: {
-            id: string, title: string, date: string
-          }) =>
-          (<li className={utilStyles.listItem} key={id}>
-
-            <Link href={`/posts/${id}`}>
-              <a >{title} </a>
-            </Link>
-            <br />
-            <small className={utilStyles.lightText}>
-              <Date dateString={date} />
-            </small>
-
-          </li>)
-          )}
+          {allPostData.map((post) => {
+            return (<li key={post.id} className={utilStyles.listItem}>
+              <Link href={`/posts/${post.id}A`}>
+                <a >{post.title} </a>
+              </Link>
+            </li>)
+          })}
         </ul>
 
       </section>
